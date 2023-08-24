@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type CounterState = {
@@ -16,6 +16,28 @@ export const useCounterStore = create<CounterState>()(
     }),
     {
       name: "counter-store",
+      getStorage: () => localStorage,
+    }
+  )
+);
+
+type TestState = {
+  firstName: string;
+  lastName: string;
+  updateFirstName: (name: any) => void;
+  updateLastName: (name: any) => void;
+};
+
+export const useTestStore = create<TestState>()(
+  persist(
+    (set) => ({
+      firstName: "",
+      lastName: "",
+      updateFirstName: (name) => set({ firstName: name }),
+      updateLastName: (name) => set({ lastName: name }),
+    }),
+    {
+      name: "test-store",
       getStorage: () => localStorage,
     }
   )

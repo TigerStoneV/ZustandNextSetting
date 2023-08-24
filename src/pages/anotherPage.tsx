@@ -1,15 +1,19 @@
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import { useCounterStore } from "../stores/testStore";
+import { useCounterStore, useTestStore } from "../stores/testStore";
+import Link from "next/link";
+import { useGetFromStore } from "../../hooks/zustandHooks";
 
 const AnotherPage: React.FC = () => {
-  const { count } = useCounterStore();
+  const counts = useGetFromStore(useCounterStore, (state) => state.count);
+  const firstName = useGetFromStore(useTestStore, (state) => state.firstName);
+  const lastName = useGetFromStore(useTestStore, (state) => state.lastName);
 
   return (
     <div>
-      <p>Count: {count}</p>
+      <p> Count: {counts} </p>
+      <br />
+      <p> fullName: {firstName + "" + lastName}</p>
+      <br />
+      <Link href="/">페이지이동</Link>
     </div>
   );
 };
