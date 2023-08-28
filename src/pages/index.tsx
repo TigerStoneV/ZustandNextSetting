@@ -1,4 +1,8 @@
-import { useCounterStore, useTestStore } from "../stores/testStore";
+import {
+  useCounterStore,
+  useNonPersistStore,
+  useTestStore,
+} from "../stores/testStore";
 import { useGetFromStore } from "../../hooks/zustandHooks";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,12 +17,17 @@ const HomePage: React.FC = () => {
     useTestStore,
     (state) => state.firstName
   );
-
   const lastNameValue = useGetFromStore(
     useTestStore,
     (state) => state.lastName
   );
-
+  // non persist
+  const count = useNonPersistStore((state) => state.count);
+  const increments = useNonPersistStore((state) => state.increment);
+  const [incrementValue, setIncrementValue] = useState<number>(0);
+  const handleIncrement = () => {
+    increments(incrementValue);
+  };
   return (
     <div>
       <h1> Zustand Example </h1>
@@ -47,7 +56,15 @@ const HomePage: React.FC = () => {
       >
         저장하기
       </button>
-      <br /> <br /> <br /> <br />
+      <br /> <br />
+      <p>nonpersist count : {count}</p>
+      <input
+        type="number"
+        value={incrementValue}
+        onChange={(e) => setIncrementValue(parseInt(e.target.value, 10))}
+      />
+      <button onClick={handleIncrement}>Increment</button>
+      <br /> <br />
       <Link href="/anotherPage">페이지이동</Link>
     </div>
   );

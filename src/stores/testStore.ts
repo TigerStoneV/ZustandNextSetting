@@ -42,3 +42,16 @@ export const useTestStore = create<TestState>()(
     }
   )
 );
+
+type NonPersistState = {
+  count: number;
+  increment: (value: number) => void;
+};
+
+export const useNonPersistStore = create<NonPersistState>((set) => ({
+  count: 0,
+  increment: (param: number) =>
+    set((state: any) => ({
+      count: state.count + param,
+    })),
+}));
